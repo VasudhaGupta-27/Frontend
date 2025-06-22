@@ -18,7 +18,7 @@ export default function LandingPage() {
   const handleShowRegister = () => setShowLogin(false);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-amber-100 overflow-y-hidden">
+    <div className=" min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-amber-100 overflow-y-hidden">
       <Navbar />
       <div className="flex flex-col md:flex-row w-full justify-center gap-2 flex-1">
         <div className="left w-full md:w-[60%] flex flex-col items-center justify-center px-4 py-8">
