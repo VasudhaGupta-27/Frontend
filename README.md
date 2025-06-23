@@ -1,6 +1,6 @@
 # 🚀 SignetFlow – Frontend
 
-DocuMark is a secure, modern, and easy-to-use digital document signing application built using the MERN stack. This repository contains the **React.js + Tailwind CSS** frontend for the DocuMark platform.
+SignetFlow is a secure, modern, and easy-to-use digital document signing application built using the MERN stack. This repository contains the **React.js + Tailwind CSS** frontend for the DocuMark platform.
 
 ---
 
