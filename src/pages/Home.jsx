@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { useState } from "react";
 import Upload from "../components/Upload";
 import { TypeAnimation } from "react-type-animation";
+import API from "../utils/api";
 
 export default function Home() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const [docs, setDocs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -18,6 +20,24 @@ export default function Home() {
       setUsername(user.name);
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const fetchDocs = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await API.get("/docs", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setDocs(res.data);
+      } catch (err) {
+        console.error("Error fetching documents", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDocs();
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -51,10 +71,15 @@ export default function Home() {
 
       <div className="max-w-4xl mx-auto mt-12 p-8 bg-white/80 rounded-2xl shadow-2xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-blue-100 rounded-xl p-6 shadow flex flex-col items-center">
+          <div
+            onClick={() => navigate("/my-documents")}
+            className="bg-blue-100 rounded-xl p-6 shadow flex flex-col items-center"
+          >
             <span className="text-4xl mb-2">📄</span>
             <span className="font-semibold text-lg">My Documents</span>
-            <span className="text-gray-500 text-sm mt-1">0 uploaded</span>
+            <span className="text-gray-500 text-sm mt-1">
+              {docs.length} uploaded
+            </span>
           </div>
           <div className="bg-amber-100 rounded-xl p-6 shadow flex flex-col items-center">
             <span className="text-4xl mb-2">✍️</span>
