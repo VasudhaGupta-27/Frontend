@@ -62,7 +62,7 @@ export default function PDFPreview() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-amber-100 flex flex-col items-center py-10 px-2">
       {/* Add your Navbar here if needed */}
       <h2 className="text-2xl md:text-3xl font-bold text-amber-600 mb-4 text-center break-all">
-        {doc.filename}
+        {doc.originalname}
       </h2>
       <motion.div
         className="bg-white/90 rounded-2xl shadow-xl p-6 max-w-2xl w-full flex flex-col items-center"
