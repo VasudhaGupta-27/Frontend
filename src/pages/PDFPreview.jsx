@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import { Document, Page, pdfjs } from "react-pdf";  
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import API from "../utils/api";
 import { motion } from "framer-motion";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 import { DndContext, useDraggable } from "@dnd-kit/core";
 import { toast, Toaster } from "react-hot-toast";
+import { Eye } from "lucide-react";
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -362,6 +363,7 @@ export default function PDFPreview() {
                   onChange={(e) => setSelectedFont(e.target.value)}
                   className="border px-3 py-1 rounded w-full"
                 >
+                  <option value="'Cursive', cursive">Cursive</option>
                   <option value="'Great Vibes', cursive">Great Vibes</option>
                   <option value="'Dancing Script', cursive">
                     Dancing Script
@@ -387,7 +389,7 @@ export default function PDFPreview() {
               </button>
             </div>
           )}
-          {finalize && (
+          {placedSignatures.length > 0 && (
             <div className="h-full flex items-end">
               <button
                 onClick={handleFinalize}

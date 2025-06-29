@@ -9,7 +9,10 @@ export default function Home() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [docs, setDocs] = useState([]);
+  const [Pendocs, setPendocs] = useState([]);
+  const [Signeddocs, setSigneddocs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,11 +40,61 @@ export default function Home() {
     };
 
     fetchDocs();
+    const fetchPending = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await API.get("/docs/pending", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setPendocs(res.data);
+      } catch (err) {
+        console.error("Error fetching documents", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPending();
+    const fetchSignedDoc = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await API.get("/docs/signed", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setSigneddocs(res.data);
+      } catch (err) {
+        console.error("Error fetching documents", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSignedDoc();
   }, []);
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setShowLogin(true);
+    navigate("/"); // Optionally redirect to landing
+  };
+
+  const isLoggedIn = !!localStorage.getItem("token");
 
   return (
     <div className="min-h-screen">
       <Navbar />
+      {/* Logout button */}
+      {isLoggedIn && (
+        <div className="flex justify-end p-4">
+          <button
+            onClick={handleLogout}
+            className="bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition"
+          >
+            Logout
+          </button>
+        </div>
+      )}
       <div className="flex justify-center">
         <h1 className="text-3xl font-bold mb-4 text-amber-600">
           {" "}
@@ -81,15 +134,15 @@ export default function Home() {
               {docs.length} uploaded
             </span>
           </div>
-          <div className="bg-amber-100 rounded-xl p-6 shadow flex flex-col items-center">
+          <div onClick={()=> navigate("/pending-doc")} className="bg-amber-100 rounded-xl p-6 shadow flex flex-col items-center">
             <span className="text-4xl mb-2">✍️</span>
             <span className="font-semibold text-lg">Pending Signatures</span>
-            <span className="text-gray-500 text-sm mt-1">0 pending</span>
+            <span className="text-gray-500 text-sm mt-1">{Pendocs.length} pending</span>
           </div>
-          <div className="bg-green-100 rounded-xl p-6 shadow flex flex-col items-center">
+          <div onClick={()=> navigate("/signed-doc")} className="bg-green-100 rounded-xl p-6 shadow flex flex-col items-center">
             <span className="text-4xl mb-2">✅</span>
             <span className="font-semibold text-lg">Completed</span>
-            <span className="text-gray-500 text-sm mt-1">0 signed</span>
+            <span className="text-gray-500 text-sm mt-1">{Signeddocs.length} signed</span>
           </div>
         </div>
       </div>

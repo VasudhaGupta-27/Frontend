@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast, Toaster } from "react-hot-toast";
 import Home from './Home';
-
 export default function Register({ onShowRegister }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
