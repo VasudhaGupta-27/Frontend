@@ -1,15 +1,20 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../utils/api";
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { Download, Eye, Trash2 } from "lucide-react";
+import { FiInfo } from "react-icons/fi";
 
 const SignedDoc = () => {
   const [loading, setLoading] = useState(true);
   const [docs, setDocs] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [infoDoc, setInfoDoc] = useState(null); // <-- NEW STATE
+  const [auditTrail, setAuditTrail] = useState([]);
+  const [auditLoading, setAuditLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,21 +35,52 @@ const SignedDoc = () => {
 
     fetchDocs();
   }, []);
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this document?")) {
-      try {
-        const token = localStorage.getItem("token");
-        await API.delete(`/docs/signed/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        toast.success("Document deleted!");
-        setDocs(docs.filter((doc) => doc._id !== id));
-      } catch (err) {
-        console.error("Error deleting document", err);
-        toast.error("Failed to delete document");
-      }
+  const handleDelete = (id) => {
+    setDeleteId(id);
+    setShowAlert(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await API.delete(`/docs/signed/${deleteId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success("Document deleted!");
+      setDocs(docs.filter((doc) => doc._id !== deleteId));
+    } catch (err) {
+      console.error("Error deleting document", err);
+      toast.error("Failed to delete document");
+    } finally {
+      setShowAlert(false);
+      setDeleteId(null);
     }
   };
+
+  const cancelDelete = () => {
+    setShowAlert(false);
+    setDeleteId(null);
+  };
+
+  // Info icon handler
+  const handleInfo = async (doc) => {
+    setInfoDoc(doc);
+    setAuditTrail([]);
+    setAuditLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await API.get(`/signature/audit/${doc._id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setAuditTrail(res.data);
+    } catch (err) {
+      setAuditTrail([]);
+    } finally {
+      setAuditLoading(false);
+      document.getElementById("my_modal_1").showModal();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-amber-100">
       <Navbar />
@@ -109,7 +145,10 @@ const SignedDoc = () => {
                   {doc.signedFile ? (
                     <motion.button
                       onClick={() =>
-                        window.open(`http://localhost:5000/${doc.signedFile}`, "_blank")
+                        window.open(
+                          `http://localhost:5000/${doc.signedFile}`,
+                          "_blank"
+                        )
                       }
                       className="bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-white text-sm px-4 py-2 rounded-lg font-semibold shadow transition-all flex items-center justify-center"
                       whileHover={{ scale: 1.05 }}
@@ -130,12 +169,120 @@ const SignedDoc = () => {
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
+                  <motion.button
+                    className="text-4xl flex justify-center items-center bg-indigo-500 hover:bg-indigo-600 rounded-full p-0.5"
+                    type="button"
+                    whileHover={{ scale: 1.15, rotate: 20 }}
+                    whileTap={{ scale: 0.95, rotate: -10 }}
+                    animate={{
+                      rotate: [0, 10, -10, 0],
+                      transition: { repeat: Infinity, duration: 2 },
+                    }}
+                    title="Info"
+                    onClick={() => handleInfo(doc)} // <-- LINK MODAL
+                  >
+                    <FiInfo className="text-white" />
+                  </motion.button>
                 </div>
               </motion.div>
             ))}
           </div>
         )}
       </div>
+      {showAlert && (
+        <div
+          role="alert"
+          className="alert alert-vertical sm:alert-horizontal fixed top-10 left-1/2 transform -translate-x-1/2 z-50 bg-white shadow-lg border rounded-lg p-4 flex items-center gap-4"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            className="stroke-info h-6 w-6 shrink-0"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <span className="text-lg">
+            Are you sure you want to delete this signed document?
+          </span>
+          <div className="flex gap-2">
+            <button className="btn btn-sm" onClick={cancelDelete}>
+              No
+            </button>
+            <button
+              className="btn bg-red-500 btn-sm btn-primary"
+              onClick={confirmDelete}
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for audit Info */}
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Document Info</h3>
+          {infoDoc && (
+            <div className="py-4 space-y-2">
+              <div>
+                <span className="font-semibold">File Name:</span> {infoDoc.originalname}
+              </div>
+              <div>
+                <span className="font-semibold">Uploaded:</span> {new Date(infoDoc.uploadedAt).toLocaleString()}
+              </div>
+              <div className="mt-4">
+                <span className="font-semibold">Audit Info:</span>
+                {auditLoading ? (
+                  <div className="text-gray-500 text-sm">Loading audit info...</div>
+                ) : auditTrail && auditTrail.length > 0 ? (
+                  <div className="max-h-40 overflow-y-auto mt-2">
+                    <table className="table-auto w-full text-xs">
+                      <thead>
+                        <tr>
+                          <th className="px-2 py-1 text-left">Name</th>
+                          <th className="px-2 py-1 text-left">Email</th>
+                          <th className="px-2 py-1 text-left">IP Address</th>
+                          <th className="px-2 py-1 text-left">Signed At</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {auditTrail.map((entry, idx) => (
+                          <tr key={idx}>
+                            <td className="px-2 py-1">{entry.signer?.name || "-"}</td>
+                            <td className="px-2 py-1">{entry.signer?.email || "-"}</td>
+                            <td className="px-2 py-1">{entry.ipAddress || "-"}</td>
+                            <td className="px-2 py-1">
+                              {entry.signedAt
+                                ? new Date(entry.signedAt).toLocaleString()
+                                : "-"}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="text-gray-500 text-sm">No audit info found.</div>
+                )}
+              </div>
+            </div>
+          )}
+          <div className="modal-action">
+            <button
+              className="btn"
+              onClick={() => document.getElementById("my_modal_1").close()}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };

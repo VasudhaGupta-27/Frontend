@@ -208,6 +208,7 @@ export default function PDFPreview() {
       <h2 className="text-2xl md:text-3xl font-bold text-amber-600 mb-4 text-center break-all">
         {doc.originalname}
       </h2>
+      <div className="mt-2 text-red-600"><p>Place it slightly below where you want the actual signature for better placement. </p></div>
 
       <div className="flex flex-row w-full max-w-2xl gap-6">
         {/* PDF Preview */}
