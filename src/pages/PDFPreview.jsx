@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";  
+import { Document, Page, pdfjs } from "react-pdf";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import API from "../utils/api";
 import { motion } from "framer-motion";
@@ -72,6 +72,8 @@ export default function PDFPreview() {
   const [finalize, setfinalize] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [renderedPageHeight, setRenderedPageHeight] = useState(0);
+  const [showRejectReason, setShowRejectReason] = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     const fetchDoc = async () => {
@@ -131,7 +133,26 @@ export default function PDFPreview() {
   };
   const handleFinalize = async () => {
     const token = localStorage.getItem("token");
+
     try {
+      toast.loading("Accepting signature...");
+
+      // 1️⃣ Call accept API first
+      const sigId = placedSignatures[0]?._id; // or use your logic to pick the correct signature
+      if (!sigId) {
+        toast.error("No signature to accept.");
+        return;
+      }
+      await API.post(
+        `/signature/accept/${sigId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      toast.dismiss();
+      toast.success("Signature accepted!");
+
+      // // 2️⃣ finalize
       toast.loading("Generating signed PDF...");
       const res = await API.post(
         "/signature/finalize",
@@ -140,6 +161,7 @@ export default function PDFPreview() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+
       toast.dismiss();
       toast.success("Signed PDF ready!");
 
@@ -149,6 +171,31 @@ export default function PDFPreview() {
       toast.dismiss();
       console.error(err);
       toast.error("Failed to finalize signed PDF.");
+    }
+  };
+  const handleReject = async () => {
+    const reason = rejectReason.trim();
+    if (!reason) {
+      return toast.error("Please provide a reason for rejection.");
+    }
+    const sigId = placedSignatures[0]?._id;
+
+    const token = localStorage.getItem("token");
+    try {
+      // 1️⃣ Optionally, you can send the reason to the server
+      await API.post(
+        `/signature/reject/${sigId}`,
+        { reason },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      toast.success("Document rejected. Reason: " + reason);
+
+      // 2️⃣ Navigate to another page or update the UI as needed
+      navigate("/home");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to reject the document.");
     }
   };
 
@@ -208,7 +255,12 @@ export default function PDFPreview() {
       <h2 className="text-2xl md:text-3xl font-bold text-amber-600 mb-4 text-center break-all">
         {doc.originalname}
       </h2>
-      <div className="mt-2 text-red-600"><p>Place it slightly below where you want the actual signature for better placement. </p></div>
+      <div className="mt-2 text-red-600">
+        <p>
+          Place it slightly below where you want the actual signature for better
+          placement.{" "}
+        </p>
+      </div>
 
       <div className="flex flex-row w-full max-w-2xl gap-6">
         {/* PDF Preview */}
@@ -394,14 +446,58 @@ export default function PDFPreview() {
             <div className="h-full flex items-end">
               <button
                 onClick={handleFinalize}
+                className="w-20 font-medium text-white px-4 py-2 rounded-lg hover:bg-green-600 transition bg-green-500 mt-2 mr-3"
+              >
+                Accept
+              </button>
+              {/* Button to open modal */}
+              <button
+                onClick={() => setShowRejectReason(true)}
                 className="w-20 font-medium text-white px-4 py-2 rounded-lg hover:bg-red-600 transition bg-red-400 mt-2"
               >
-                Finalize
+                Reject
               </button>
             </div>
           )}
         </div>
       </div>
+
+      {/* Modal for rejection reason */}
+      {showRejectReason && (
+        <dialog
+          open
+          className="modal"
+          onClose={() => setShowRejectReason(false)}
+        >
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Reject Document</h3>
+            <p className="py-2">Please provide a reason for rejection:</p>
+            <textarea
+              className="textarea textarea-ghost w-full mb-4"
+              placeholder="Reason for rejection"
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              rows={3}
+              style={{ minWidth: 180 }}
+            />
+            <div className="modal-action flex gap-2">
+              <form method="dialog">
+                <button className="btn">Close</button>
+              </form>
+              <button
+                className="btn btn-primary"
+                onClick={async () => {
+                  await handleReject(rejectReason);
+                  setRejectReason("");
+                  setShowRejectReason(false);
+                }}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
     </div>
   );
 }
