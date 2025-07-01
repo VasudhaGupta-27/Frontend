@@ -32,7 +32,7 @@ export default function LandingPage() {
             transition={{ duration: 1 }}
           >
             <span className="text-amber-500">Welcome to</span>
-            <span className="text-[#343434]">SignetFlow</span>
+            <span className="text-[#343434]">SignSecure</span>
           </motion.h1>
           <motion.h2
             className="text-lg md:text-2xl text-gray-600 mb-8 text-center"
