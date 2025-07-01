@@ -1,7 +1,12 @@
+
 @import "tailwindcss";
+ @plugin "daisyui" {
+  themes: light --default;
+ }
 /* body {
   overflow-y: hidden;
 } */
+ 
 .input {
   @apply border border-gray-300 rounded px-3 py-2 w-full mb-3 focus:outline-none focus:ring focus:border-blue-500;
 }
