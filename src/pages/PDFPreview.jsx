@@ -247,7 +247,7 @@ export default function PDFPreview() {
     );
   }
 
-  const fileUrl = `http://localhost:5000/${doc.filepath}`;
+  const fileUrl = `https://backend-wufu.onrender.com/${doc.filepath}`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-purple-100 to-white flex flex-col items-center py-2 sm:py-10 px-1 sm:px-2">
