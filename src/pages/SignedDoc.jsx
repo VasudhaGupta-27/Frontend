@@ -82,20 +82,20 @@ const SignedDoc = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-amber-100">
+    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-purple-100 to-white">
       <Navbar />
       <div className="flex flex-col items-center mt-8">
         <motion.h2
-          className="text-3xl md:text-4xl font-extrabold mb-2 text-amber-600 drop-shadow"
+          className="text-3xl md:text-4xl font-extrabold mb-2 text-green-700 drop-shadow"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
           📄 Signed PDFs
         </motion.h2>
-        <p className="text-gray-600 mb-6 text-center max-w-xl">
+        <p className="text-gray-700 mb-6 text-center max-w-xl">
           All your signed documents are listed below. Click{" "}
-          <span className="font-semibold text-amber-600">Preview</span> to view
+          <span className="font-semibold text-purple-700">Preview</span> to view
           your PDF.
         </p>
       </div>
@@ -119,14 +119,14 @@ const SignedDoc = () => {
             {docs.map((doc, idx) => (
               <motion.div
                 key={doc._id}
-                className="p-5 flex flex-col md:flex-row md:items-center justify-between bg-white/90 border border-amber-100 rounded-2xl shadow-lg hover:shadow-amber-200 transition"
+                className="p-5 flex flex-col md:flex-row md:items-center justify-between bg-white/70 border border-green-100 rounded-2xl shadow-lg hover:shadow-green-200 transition backdrop-blur-md"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: idx * 0.07 }}
               >
                 <div>
                   <p className="font-bold text-gray-800 text-lg flex items-center gap-2">
-                    <span className="text-amber-500">📄</span>
+                    <span className="text-green-700">📄</span>
                     {doc.originalname}
                   </p>
                   <p className="text-sm text-gray-500 mt-1">
@@ -150,7 +150,7 @@ const SignedDoc = () => {
                           "_blank"
                         )
                       }
-                      className="bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-white text-sm px-4 py-2 rounded-lg font-semibold shadow transition-all flex items-center justify-center"
+                      className="bg-gradient-to-r from-teal-400 via-purple-400 to-purple-700 hover:from-teal-500 hover:to-purple-800 text-white text-sm px-4 py-2 rounded-lg font-semibold shadow transition-all flex items-center justify-center"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.97 }}
                       title="Preview"
@@ -170,7 +170,7 @@ const SignedDoc = () => {
                     <Trash2 className="w-5 h-5" />
                   </button>
                   <motion.button
-                    className="text-4xl flex justify-center items-center bg-indigo-500 hover:bg-indigo-600 rounded-full p-0.5"
+                    className="text-4xl flex justify-center items-center bg-purple-500 hover:bg-purple-600 rounded-full p-0.5"
                     type="button"
                     whileHover={{ scale: 1.15, rotate: 20 }}
                     whileTap={{ scale: 0.95, rotate: -10 }}
@@ -179,7 +179,7 @@ const SignedDoc = () => {
                       transition: { repeat: Infinity, duration: 2 },
                     }}
                     title="Info"
-                    onClick={() => handleInfo(doc)} // <-- LINK MODAL
+                    onClick={() => handleInfo(doc)}
                   >
                     <FiInfo className="text-white" />
                   </motion.button>
@@ -192,7 +192,7 @@ const SignedDoc = () => {
       {showAlert && (
         <div
           role="alert"
-          className="alert alert-vertical sm:alert-horizontal fixed top-10 left-1/2 transform -translate-x-1/2 z-50 bg-white shadow-lg border rounded-lg p-4 flex items-center gap-4"
+          className="alert alert-vertical sm:alert-horizontal fixed top-10 left-1/2 transform -translate-x-1/2 z-50 bg-white/80 shadow-lg border border-purple-200 rounded-lg p-4 flex items-center gap-4 backdrop-blur-md"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -211,11 +211,11 @@ const SignedDoc = () => {
             Are you sure you want to delete this signed document?
           </span>
           <div className="flex gap-2">
-            <button className="btn btn-sm" onClick={cancelDelete}>
+            <button className="btn btn-sm bg-gray-200 hover:bg-gray-300 text-gray-700" onClick={cancelDelete}>
               No
             </button>
             <button
-              className="btn bg-red-500 btn-sm btn-primary"
+              className="btn bg-red-500 btn-sm btn-primary hover:bg-red-600 text-white"
               onClick={confirmDelete}
             >
               Yes
@@ -223,11 +223,10 @@ const SignedDoc = () => {
           </div>
         </div>
       )}
-
       {/* Modal for audit Info */}
       <dialog id="my_modal_1" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Document Info</h3>
+        <div className="modal-box bg-white/80 border border-purple-200 shadow-xl rounded-2xl">
+          <h3 className="font-bold text-lg text-purple-700">Document Info</h3>
           {infoDoc && (
             <div className="py-4 space-y-2">
               <div>
@@ -254,13 +253,13 @@ const SignedDoc = () => {
                       <tbody>
                         {auditTrail.map((entry, idx) => (
                           <tr key={idx}>
-                            <td className="px-2 py-1">{entry.signer?.name || "-"}</td>
-                            <td className="px-2 py-1">{entry.signer?.email || "-"}</td>
-                            <td className="px-2 py-1">{entry.ipAddress || "-"}</td>
+                            <td className="px-2 py-1">{entry.signer?.name || '-'}</td>
+                            <td className="px-2 py-1">{entry.signer?.email || '-'}</td>
+                            <td className="px-2 py-1">{entry.ipAddress || '-'}</td>
                             <td className="px-2 py-1">
                               {entry.signedAt
                                 ? new Date(entry.signedAt).toLocaleString()
-                                : "-"}
+                                : '-'}
                             </td>
                           </tr>
                         ))}
@@ -275,8 +274,8 @@ const SignedDoc = () => {
           )}
           <div className="modal-action">
             <button
-              className="btn"
-              onClick={() => document.getElementById("my_modal_1").close()}
+              className="btn bg-gray-200 hover:bg-gray-300 text-gray-700"
+              onClick={() => document.getElementById('my_modal_1').close()}
             >
               Close
             </button>

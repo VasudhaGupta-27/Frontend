@@ -64,7 +64,7 @@ export default function Upload() {
           onClick={handleClick}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          whileHover={{ scale: 1.03, boxShadow: "0 8px 24px #f59e42" }}
+          whileHover={{ scale: 1.03, boxShadow: "0 8px 24px" }}
         >
           <input
             type="file"
@@ -76,7 +76,7 @@ export default function Upload() {
           <svg
             className="w-16 h-16 text-gray-400 mb-3"
             fill="none"
-            stroke="currentColor"
+           stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 48 48"
           >
@@ -93,7 +93,7 @@ export default function Upload() {
         </motion.div>
         <motion.button
           type="submit"
-          className="w-full mt-6 bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-white py-2 rounded-lg font-bold text-lg shadow-lg hover:from-amber-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+          className="w-full mt-6 bg-purple-600 text-white py-2 rounded-lg font-bold text-lg shadow-lg hover:from-amber-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
         >
@@ -103,3 +103,4 @@ export default function Upload() {
     </div>
   );
 }
+ 
