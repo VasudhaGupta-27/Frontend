@@ -259,7 +259,7 @@ export default function PDFPreview() {
     );
   }
 
-  const fileUrl = `https://backend-jnwc.onrender.com/uploads/${doc.filepath}`;
+  const fileUrl = `https://backend-jnwc.onrender.com/${doc.filepath}`;
 
   // --- MOBILE UI ---
   if (isMobile) {
