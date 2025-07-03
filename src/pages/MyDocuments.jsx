@@ -126,7 +126,7 @@ export default function MyDocuments() {
                     <Eye className="w-5 h-5" />
                   </motion.button>
                   <a
-                    href={`http://localhost:5000/uploads/${doc.filename}`}
+                    href={`https://backend-jnwc.onrender.com/uploads/${doc.filename}`}
                     download={doc.originalname}
                     className="bg-[#7c6f57] hover:bg-[#bfa77a] text-white text-sm px-4 py-2 rounded-lg font-semibold shadow transition-all flex items-center justify-center"
                     title="Download"
