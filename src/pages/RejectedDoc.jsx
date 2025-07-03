@@ -27,18 +27,18 @@ const RejectedDoc = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-purple-100 to-white">
+    <div className="min-h-screen bg-[#f5e9da]">
       <Navbar />
       <div className="flex flex-col items-center mt-8">
         <motion.h2
-          className="text-3xl md:text-4xl font-extrabold mb-2 text-red-600 drop-shadow"
+          className="text-3xl md:text-4xl font-extrabold mb-2 text-[#b85c4c] drop-shadow"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
           📄 Rejected PDFs
         </motion.h2>
-        <p className="text-gray-700 mb-6 text-center max-w-xl">
+        <p className="text-[#7c5e3c] mb-6 text-center max-w-xl">
           All your rejected documents are listed below.
         </p>
       </div>

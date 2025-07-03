@@ -44,24 +44,24 @@ const PendingDoc = () => {
       }
     }
   };
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-purple-100 to-white">
-      <Navbar />
-      <div className="flex flex-col items-center mt-8">
-        <motion.h2
-          className="text-3xl md:text-4xl font-extrabold mb-2 text-purple-700 drop-shadow"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-        >
-          📄 Pending Signature PDFs
-        </motion.h2>
-        <p className="text-gray-700 mb-6 text-center max-w-xl">
-          All your pending signature documents are listed below. Click{" "}
-          <span className="font-semibold text-teal-600">Preview</span> to view
-          or sign your PDF.
-        </p>
-      </div>
+return (
+  <div className="min-h-screen bg-[#f5e9da]">
+    <Navbar />
+    <div className="flex flex-col items-center mt-8">
+      <motion.h2
+        className="text-3xl md:text-4xl font-extrabold mb-2 text-[#7c5e3c] drop-shadow"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+      >
+        📄 Pending Signature PDFs
+      </motion.h2>
+      <p className="text-[#7c5e3c] mb-6 text-center max-w-xl">
+        All your pending signature documents are listed below. Click{" "}
+        <span className="font-semibold text-[#b89b6a]">Preview</span> to view
+        or sign your PDF.
+      </p>
+    </div>
       <div className="max-w-2xl mx-auto px-2 pb-12">
         {loading ? (
           <div className="text-center text-gray-500 py-12 text-lg">
@@ -102,7 +102,7 @@ const PendingDoc = () => {
                 <div className="flex flex-row gap-4 mt-4 md:mt-0">
                   <motion.button
                     onClick={() => navigate(`/preview/${doc._id}`)}
-                    className="bg-gradient-to-r from-teal-400 via-purple-400 to-purple-700 hover:from-teal-500 hover:to-purple-800 text-white text-sm px-4 py-2 rounded-lg font-semibold shadow transition-all flex items-center justify-center"
+                    className="bg-[#f8f5f0] hover:bg-[#f3e9db] text-[#7c5e3c] border border-[#e7dbc8] text-sm px-4 py-2 rounded-lg font-semibold shadow transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#e7dbc8]"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.97 }}
                     title="Preview"
@@ -111,7 +111,7 @@ const PendingDoc = () => {
                   </motion.button>
                   <button
                     onClick={() => handleDelete(doc._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-lg font-semibold shadow transition-all flex items-center justify-center"
+                    className="bg-[#fff3f0] hover:bg-[#fbe3dd] text-[#b85c4c] border border-[#f3d1c4] text-sm px-4 py-2 rounded-lg font-semibold shadow transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#f3d1c4]"
                     title="Delete"
                   >
                     <Trash2 className="w-5 h-5" />

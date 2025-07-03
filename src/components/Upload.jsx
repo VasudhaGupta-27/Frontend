@@ -93,7 +93,7 @@ export default function Upload() {
         </motion.div>
         <motion.button
           type="submit"
-          className="w-full mt-6 bg-purple-600 text-white py-2 rounded-lg font-bold text-lg shadow-lg hover:from-amber-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+          className="w-full mt-6 bg-[#bfa77a] text-white py-2 rounded-lg font-bold text-lg shadow-lg hover:from-amber-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
         >

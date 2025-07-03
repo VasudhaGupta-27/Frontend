@@ -89,24 +89,24 @@ export default function Home() {
   const isLoggedIn = !!localStorage.getItem("token");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-purple-100 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#f8f5f0] via-[#f5ede3] to-white">
       <Navbar />
       {/* Logout button */}
       {isLoggedIn && (
         <div className="flex justify-end p-4">
           <button
             onClick={handleLogout}
-            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-teal-500 transition font-semibold shadow"
+            className="bg-[#bfa77a] text-white px-4 py-2 rounded hover:bg-[#a68a64] transition font-semibold shadow"
           >
             Logout
           </button>
         </div>
       )}
       <div className="flex justify-center">
-        <h1 className="text-3xl font-bold mb-4 text-teal-600 drop-shadow">
+        <h1 className="text-3xl font-bold mb-4 text-[#a68a64] drop-shadow">
           Hii
-          <span className="text-purple-700"> {username}</span>{" "}
-          <span className="text-teal-500">
+          <span className="text-[#7c6f57]"> {username}</span>{" "}
+          <span className="text-[#bfa77a]">
             <TypeAnimation
               sequence={[
                 ", upload your file below...",
@@ -127,51 +127,51 @@ export default function Home() {
       <div>
         <Upload />
       </div>
-      <div className="max-w-4xl mx-auto mt-12 p-8 bg-white/60 backdrop-blur-lg rounded-2xl shadow-2xl border border-purple-100">
+      <div className="max-w-4xl mx-auto mt-12 p-8 bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl border border-[#e7dbc7]">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div
             onClick={() => navigate("/my-documents")}
-            className="bg-teal-100/80 border border-teal-200 rounded-xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[160px] cursor-pointer transition hover:scale-105 hover:bg-teal-200/80 text-center backdrop-blur-md"
+            className="bg-[#f8f5f0] border border-[#e7dbc7] rounded-xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[160px] cursor-pointer transition hover:scale-105 hover:bg-[#f5ede3] text-center backdrop-blur-md"
           >
             <span className="text-4xl mb-2">📄</span>
-            <span className="font-semibold text-lg text-teal-700">
+            <span className="font-semibold text-lg text-[#a68a64]">
               My Documents
             </span>
-            <span className="text-gray-500 text-sm mt-1">
+            <span className="text-[#bfa77a] text-sm mt-1">
               {docs.length} uploaded
             </span>
           </div>
           <div
             onClick={() => navigate("/pending-doc")}
-            className="bg-purple-100/80 border border-purple-200 rounded-xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[160px] cursor-pointer transition hover:scale-105 hover:bg-purple-200/80 text-center backdrop-blur-md"
+            className="bg-[#f5ede3] border border-[#e7dbc7] rounded-xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[160px] cursor-pointer transition hover:scale-105 hover:bg-[#f8f5f0] text-center backdrop-blur-md"
           >
             <span className="text-4xl mb-2">✍️</span>
-            <span className="font-semibold text-lg text-purple-700">
+            <span className="font-semibold text-lg text-[#bfa77a]">
               Pending Signatures
             </span>
-            <span className="text-gray-500 text-sm mt-1">
+            <span className="text-[#a68a64] text-sm mt-1">
               {Pendocs.length} pending
             </span>
           </div>
           <div
             onClick={() => navigate("/signed-doc")}
-            className="bg-green-100/80 border border-green-200 rounded-xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[160px] cursor-pointer transition hover:scale-105 hover:bg-green-200/80 text-center backdrop-blur-md"
+            className="bg-[#ede7d2] border border-[#e7dbc7] rounded-xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[160px] cursor-pointer transition hover:scale-105 hover:bg-[#f8f5f0] text-center backdrop-blur-md"
           >
             <span className="text-4xl mb-2">✅</span>
-            <span className="font-semibold text-lg text-green-700">Completed</span>
-            <span className="text-gray-500 text-sm mt-1">
+            <span className="font-semibold text-lg text-[#7c6f57]">Completed</span>
+            <span className="text-[#bfa77a] text-sm mt-1">
               {Signeddocs.length} signed
             </span>
           </div>
           <div
             onClick={() => navigate("/rejected-doc")}
-            className="bg-red-100/80 border border-red-200 rounded-xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[160px] cursor-pointer transition hover:scale-105 hover:bg-red-200/80 text-center backdrop-blur-md"
+            className="bg-[#f5e7e3] border border-[#e7dbc7] rounded-xl p-6 shadow-lg flex flex-col items-center justify-center min-h-[160px] cursor-pointer transition hover:scale-105 hover:bg-[#f8f5f0] text-center backdrop-blur-md"
           >
             <span className="text-4xl mb-2">❌</span>
-            <span className="font-semibold text-lg text-red-700">
+            <span className="font-semibold text-lg text-[#c97a7a]">
               Rejected Signatures
             </span>
-            <span className="text-gray-500 text-sm mt-1">
+            <span className="text-[#a68a64] text-sm mt-1">
               {rejected.length} rejected
             </span>
           </div>
