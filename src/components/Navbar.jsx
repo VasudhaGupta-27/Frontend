@@ -7,8 +7,9 @@ export default function Navbar() {
       <div className="flex items-center gap-3">
        
         <span className="text-2xl font-bold text-[#776648] tracking-tight drop-shadow">
-          Sign<span className="text-[#bfa77a] font-extrabold">Secure</span>
-        </span>
+          Signee</span>
+       
+       
       </div>
     </nav>
   );
