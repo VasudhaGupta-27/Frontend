@@ -175,7 +175,7 @@ export default function PDFPreview() {
       toast.dismiss();
       toast.success("Signed PDF ready!");
 
-      window.open(`https://backend-jnwc.onrender.com/uploads/${res.data.signedFile}`, "_blank");
+      window.open(`https://backend-jnwc.onrender.com/${res.data.signedFile}`, "_blank"); 
       navigate("/home");
     } catch (err) {
       toast.dismiss();
