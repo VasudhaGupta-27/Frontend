@@ -146,7 +146,7 @@ const SignedDoc = () => {
                     <motion.button
                       onClick={() =>
                         window.open(
-                          `https://backend-wufu.onrender.com/${doc.signedFile}`,
+                          `https://backend-jnwc.onrender.com/${doc.signedFile}`,
                           "_blank"
                         )
                       }
