@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../assets/Logo.jpeg";
+
 
 export default function Navbar() {
   return (
@@ -9,7 +9,7 @@ export default function Navbar() {
         <span className="text-2xl font-bold text-[#776648] tracking-tight drop-shadow">
           Signee</span>
        
-       
+
       </div>
     </nav>
   );
